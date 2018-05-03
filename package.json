@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint",
     "prettier": "prettier",
-    "format": "eslint ./ --fix"
+    "format": "eslint ./ --fix",
+    "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/wulfcode/fortnite_bot#readme",
   "devDependencies": {
+    "chalk": "^2.4.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
