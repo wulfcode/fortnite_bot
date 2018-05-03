@@ -14,3 +14,5 @@ r
   .getSubreddit('fortnitebr')
   .getNewComments({ limit: 30 })
   .then(console.log);
+
+console.log('hello world');
