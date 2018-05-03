@@ -4,7 +4,10 @@
   "description": "Fortnite reddit bot.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint",
+    "prettier": "prettier",
+    "format": "eslint ./ --fix"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,14 @@
   "bugs": {
     "url": "https://github.com/wulfcode/fortnite_bot/issues"
   },
-  "homepage": "https://github.com/wulfcode/fortnite_bot#readme"
+  "homepage": "https://github.com/wulfcode/fortnite_bot#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "husky": "^1.0.0-rc.2",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1"
+  }
 }
