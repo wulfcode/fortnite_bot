@@ -8,8 +8,7 @@
     "eslint": "eslint",
     "prettier": "prettier",
     "format": "eslint ./ --fix --ext .js",
-    "eslint-check":
-      "eslint --print-config .eslintrc | eslint-config-prettier-check"
+    "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check"
   },
   "repository": {
     "type": "git",
@@ -33,6 +32,7 @@
   },
   "dependencies": {
     "dotenv": "^5.0.1",
+    "request-promise-native": "^1.0.5",
     "snoostorm": "0.0.5",
     "snoowrap": "^1.15.2"
   }
