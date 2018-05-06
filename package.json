@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "dotenv": "^5.0.1",
+    "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "snoostorm": "0.0.5",
     "snoowrap": "^1.15.2"
