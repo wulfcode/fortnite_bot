@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const SnooWrap = require('snoowrap');
 const Streamer = require('./Streamer');
+const Resolver = require('./CommandResolver');
+const dispatch = require('./ActionDispatcher');
 
 console.log('Fortnite bot is ready.');
 
@@ -17,10 +19,15 @@ const streamer = new Streamer(snooWrap);
 
 const commentStream = streamer.CommentStream({
   subreddit: 'fortnitebr',
-  results: 5,
-  pollTime: 10000,
+  results: 10,
+  pollTime: 5000,
 });
 
 commentStream.on('comment', comment => {
-  console.log(`New comment by ${comment.author.name}`);
+  // console.log(`Comment body: ${JSON.stringify(comment.body)}`);
+  const resolver = new Resolver(comment.body);
+  const options = resolver.getActionOptions();
+  if (options) {
+    dispatch(options);
+  }
 });
