@@ -1,13 +1,21 @@
+const ShopHandler = require('./ShopHandler');
+
 const Actions = {
   /**
-   * @param {{username: string, platform: string}} param0
+   * @param {Object} options
+   * @param {string} options.username
+   * @param {string} options.platform
+   * @param {string} options.mode
    */
-  findUser({ username, platform }) {
-    console.log(`finduser ${username} ${platform}`);
+  findUser({ username, platform, mode }) {
+    console.log(`finduser ${username} ${platform} ${mode}`);
   },
-  /** @todo Implement getting item shop cosmetics
+  /**
+   * @return {Promise<string>}
    */
-  getItemShop() {},
+  async getItemShop() {
+    return ShopHandler.buildComment();
+  },
   /**
    * @todo Implement getting specific cosmetic
    */
@@ -15,10 +23,13 @@ const Actions = {
 };
 
 /**
- * @param {{action: string, options: Object}} param0
+ * @param {Object} options
+ * @param {string} options.action
+ * @param {Object} options.options
+ * @return {Promise<string>}
  */
-function dispatch({ action, ...options }) {
-  Actions[action](options);
+async function dispatch({ action, ...options }) {
+  return Actions[action](options);
 }
 
 module.exports = dispatch;

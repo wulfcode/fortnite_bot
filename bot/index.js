@@ -23,6 +23,12 @@ const commentStream = streamer.CommentStream({
   pollTime: 5000,
 });
 
+/** @todo implement queue if api limit is reached */
+const processQueue = []; // eslint-disable-line
+
+/**
+ * The "main loop". Scans comments and handles any that use the syntax.
+ */
 commentStream.on('comment', comment => {
   // console.log(`Comment body: ${JSON.stringify(comment.body)}`);
   const resolver = new Resolver(comment.body);

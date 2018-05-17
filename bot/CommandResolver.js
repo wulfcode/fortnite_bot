@@ -32,6 +32,7 @@ class CommandResolver {
         action: 'findUser',
         username: tokens[1],
         platform: tokens[2],
+        mode: tokens[3],
       };
     } else if (actions.getItemShop.includes(action)) {
       return {
