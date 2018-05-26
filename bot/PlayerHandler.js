@@ -6,7 +6,7 @@ const ENDPOINTS = require('./endpoints');
 const PLAYSTATION = ['ps4', 'ps', 'playstation', 'psn'];
 const XBOX = ['xbox', 'xbox1', 'xboxone', 'xboxone', 'xbone', 'xbl'];
 
-function validatePlatform(platform) {
+const validatePlatform = platform => {
   const normalised = platform.toLowerCase();
   if (platform === 'pc') {
     return 'pc';
@@ -15,8 +15,8 @@ function validatePlatform(platform) {
   } else if (XBOX.includes(normalised)) {
     return 'xbl';
   }
-  return false;
-}
+  return null;
+};
 
 function buildStats(response) {
   return {
@@ -57,8 +57,8 @@ const PlayerHandler = {
   },
 };
 
-// PlayerHandler.getPlayer('BasedWulf', 'ps4').then(response => {
-//   console.log(JSON.stringify(PlayerHandler.buildPlayerInfo(response)));
-// });
+PlayerHandler.getPlayer('BasedWulf', 'ps4').then(response => {
+  console.log(JSON.stringify(PlayerHandler.buildPlayerInfo(response)));
+});
 
 module.exports = PlayerHandler;

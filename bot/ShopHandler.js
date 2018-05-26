@@ -1,12 +1,13 @@
 require('dotenv').config();
 
 const request = require('request-promise-native');
-const ENDPOINTS = require('./endpoints');
+const { SHOP } = require('./endpoints');
+const { ATTRIBUTION } = require('./CommentBuilder');
 const Builder = require('./CommentBuilder');
 
 function getShop() {
   const options = {
-    uri: ENDPOINTS.SHOP,
+    uri: SHOP,
     headers: {
       [process.env.SHOPHEADER]: process.env.SHOPAPIKEY,
     },
@@ -52,7 +53,7 @@ async function buildComment() {
     return `${prev}${row}
 `;
   }, '');
-  const daily = shop.featured.reduce((prev, curr) => {
+  const daily = shop.daily.reduce((prev, curr) => {
     const row = Builder.buildRow([
       curr.name,
       curr.price,
@@ -78,6 +79,8 @@ Daily:
 ${header}
 ${Builder.buildDivider(5)}
 ${daily}
+
+${ATTRIBUTION}
 `;
 }
 

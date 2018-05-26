@@ -8,7 +8,6 @@ const EventEmitter = require('events');
  * @param {Date} start
  */
 function removeDuplicates(original, listing, start) {
-  console.log(original, '>>>', listing, '>>>', start);
   // prettier-ignore
   return listing.filter(post => original.every(a => a.id !== post.id) &&
   post.created_utc >= start / 1000);

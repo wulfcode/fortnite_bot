@@ -18,7 +18,7 @@ const snooWrap = new SnooWrap({
 const streamer = new Streamer(snooWrap);
 
 const commentStream = streamer.CommentStream({
-  subreddit: 'fortnitebr',
+  subreddit: 'fortnite_bot',
   results: 10,
   pollTime: 5000,
 });
@@ -30,10 +30,13 @@ const processQueue = []; // eslint-disable-line
  * The "main loop". Scans comments and handles any that use the syntax.
  */
 commentStream.on('comment', comment => {
-  // console.log(`Comment body: ${JSON.stringify(comment.body)}`);
   const resolver = new Resolver(comment.body);
   const options = resolver.getActionOptions();
   if (options) {
-    dispatch(options);
+    dispatch(options)
+      .then(body => {
+        snooWrap.getComment(comment.id).reply(body);
+      })
+      .catch(error => console.log(error));
   }
 });

@@ -13,7 +13,7 @@ const actions = {
  */
 const getBotCommand = input => {
   const matched = input.match(PATTERN);
-  return (matched && matched[1]) || null;
+  return (matched && matched[1].trim()) || null;
 };
 
 class CommandResolver {
