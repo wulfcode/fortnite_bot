@@ -82,7 +82,7 @@ async function buildComment(username, platform) {
     'Top 3',
     'Top 5',
     'Played',
-    'Win ratio',
+    'Win %',
     'Kills',
     'K/D',
     'KPG',
