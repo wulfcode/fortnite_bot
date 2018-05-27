@@ -21,6 +21,7 @@ function getPlayer(username, platform) {
 
 function getStats(response) {
   const player = JSON.parse(response);
+  if (player.error) return null;
   const soloStats = player.stats.curr_p2;
   const duoStats = player.stats.curr_p10;
   const squadStats = player.stats.curr_p9;
@@ -69,6 +70,7 @@ function getStats(response) {
 async function buildComment(username, platform) {
   const response = await getPlayer(username, platform);
   const stats = getStats(response);
+  if (!stats) return Promise.reject(new Error('Player not found.'));
   const header = buildRow([
     'Mode',
     'Wins',
