@@ -4,6 +4,7 @@ const SnooWrap = require('snoowrap');
 const Streamer = require('./Streamer');
 const Resolver = require('./CommandResolver');
 const dispatch = require('./ActionDispatcher');
+const SUBREDDIT = require('./subreddit');
 
 console.log('Fortnite bot is ready.');
 
@@ -18,7 +19,7 @@ const snooWrap = new SnooWrap({
 const streamer = new Streamer(snooWrap);
 
 const commentStream = streamer.CommentStream({
-  subreddit: 'fortnite_bot',
+  subreddit: SUBREDDIT[process.env.NODE_ENV],
   results: 10,
   pollTime: 5000,
 });

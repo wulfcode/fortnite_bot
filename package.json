@@ -4,11 +4,14 @@
   "description": "Fortnite reddit bot.",
   "main": "index.js",
   "scripts": {
+    "start": "NODE_ENV=production node ./bot",
+    "dev": "NODE_ENV=development node ./bot",
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint",
     "prettier": "prettier",
     "format": "eslint ./ --fix --ext .js",
-    "eslint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check"
+    "eslint-check":
+      "eslint --print-config .eslintrc | eslint-config-prettier-check"
   },
   "repository": {
     "type": "git",
