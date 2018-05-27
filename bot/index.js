@@ -35,7 +35,7 @@ commentStream.on('comment', comment => {
   if (options) {
     dispatch(options)
       .then(body => {
-        snooWrap.getComment(comment.id).reply(body);
+        if (body) snooWrap.getComment(comment.id).reply(body);
       })
       .catch(error => console.log(error));
   }

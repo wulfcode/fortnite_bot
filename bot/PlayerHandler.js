@@ -68,9 +68,14 @@ function getStats(response) {
 }
 
 async function buildComment(username, platform) {
-  const response = await getPlayer(username, platform);
+  let response;
+  try {
+    response = await getPlayer(username, platform);
+  } catch (error) {
+    return null;
+  }
   const stats = getStats(response);
-  if (!stats) return Promise.reject(new Error('Player not found.'));
+  if (!stats) return null;
   const header = buildRow([
     'Mode',
     'Wins',
