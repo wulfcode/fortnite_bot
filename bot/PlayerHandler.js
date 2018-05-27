@@ -1,64 +1,109 @@
 require('dotenv').config();
 
 const request = require('request-promise-native');
-const ENDPOINTS = require('./endpoints');
+const { TRACKER } = require('./endpoints');
+const { validatePlatform } = require('./validators');
+const { ATTRIBUTION, buildDivider, buildRow } = require('./CommentBuilder');
 
-const PLAYSTATION = ['ps4', 'ps', 'playstation', 'psn'];
-const XBOX = ['xbox', 'xbox1', 'xboxone', 'xboxone', 'xbone', 'xbl'];
-
-const validatePlatform = platform => {
-  const normalised = platform.toLowerCase();
-  if (platform === 'pc') {
-    return 'pc';
-  } else if (PLAYSTATION.includes(normalised)) {
-    return 'psn';
-  } else if (XBOX.includes(normalised)) {
-    return 'xbl';
+function getPlayer(username, platform) {
+  const validatedPlatform = validatePlatform(platform);
+  if (!validatedPlatform) {
+    return Promise.reject(new Error('Invalid platform.'));
   }
-  return null;
-};
+  const options = {
+    uri: `${TRACKER}/${validatedPlatform}/${username}`,
+    headers: {
+      [process.env.FTHEADER]: process.env.FTAPIKEY,
+    },
+  };
+  return request(options);
+}
 
-function buildStats(response) {
+function getStats(response) {
+  const player = JSON.parse(response);
+  const soloStats = player.stats.curr_p2;
+  const duoStats = player.stats.curr_p10;
+  const squadStats = player.stats.curr_p9;
   return {
-    username: response.epicUserHandle,
+    username: player.epicUserHandle,
     stats: {
-      current: {
-        solo: response.stats.curr_p2,
-        duo: response.stats.curr_p10,
-        squad: response.stats.curr_p9,
-      },
-      lifetime: {
-        solo: response.stats.p2,
-        duo: response.stats.p10,
-        squad: response.stats.p9,
-      },
+      current: [
+        {
+          mode: 'solo',
+          wins: soloStats.top1.value,
+          top3: soloStats.top3.value,
+          top5: soloStats.top5.value,
+          played: soloStats.matches.value,
+          winRatio: soloStats.winRatio.value,
+          kills: soloStats.kills.value,
+          kd: soloStats.kd.value,
+          kpg: soloStats.kpg.value,
+        },
+        {
+          mode: 'duo',
+          wins: duoStats.top1.value,
+          top3: duoStats.top3.value,
+          top5: duoStats.top5.value,
+          played: duoStats.matches.value,
+          winRatio: duoStats.winRatio.value,
+          kills: duoStats.kills.value,
+          kd: duoStats.kd.value,
+          kpg: duoStats.kpg.value,
+        },
+        {
+          mode: 'squad',
+          wins: squadStats.top1.value,
+          top3: squadStats.top3.value,
+          top5: squadStats.top5.value,
+          played: squadStats.matches.value,
+          winRatio: squadStats.winRatio.value,
+          kills: squadStats.kills.value,
+          kd: squadStats.kd.value,
+          kpg: squadStats.kpg.value,
+        },
+      ],
     },
   };
 }
 
-const PlayerHandler = {
-  async getPlayer(username, platform) {
-    const validatedPlatform = validatePlatform(platform);
-    if (!validatedPlatform) {
-      return Promise.reject(new Error('Invalid platform.'));
-    }
-    const options = {
-      uri: `${ENDPOINTS.TRACKER}/${validatedPlatform}/${username}`,
-      headers: {
-        [process.env.FTHEADER]: process.env.FTAPIKEY,
-      },
-    };
-    return request(options);
-  },
-  buildPlayerInfo(rawResponse) {
-    const response = JSON.parse(rawResponse);
-    const stats = buildStats(response);
-    return stats;
-  },
-};
+async function buildComment(username, platform) {
+  const response = await getPlayer(username, platform);
+  const stats = getStats(response);
+  const header = buildRow([
+    'Mode',
+    'Wins',
+    'Top 3',
+    'Top 5',
+    'Played',
+    'Win ratio',
+    'Kills',
+    'K/D',
+    'KPG',
+  ]);
+  const table = stats.stats.current.reduce((prev, curr) => {
+    const row = buildRow([
+      `**${curr.mode}**`,
+      curr.wins,
+      curr.top3,
+      curr.top5,
+      curr.played,
+      curr.winRatio,
+      curr.kills,
+      curr.kd,
+      curr.kpg,
+    ]);
+    return `${prev}${row}
+`;
+  }, '');
+  return `
+Stats for ${stats.username}:
 
-PlayerHandler.getPlayer('BasedWulf', 'ps4').then(response => {
-  console.log(JSON.stringify(PlayerHandler.buildPlayerInfo(response)));
-});
+${header}
+${buildDivider(9)}
+${table}
 
-module.exports = PlayerHandler;
+${ATTRIBUTION}
+`;
+}
+
+module.exports = { buildComment };

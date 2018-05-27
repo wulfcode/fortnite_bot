@@ -2,8 +2,7 @@ require('dotenv').config();
 
 const request = require('request-promise-native');
 const { SHOP } = require('./endpoints');
-const { ATTRIBUTION } = require('./CommentBuilder');
-const Builder = require('./CommentBuilder');
+const { ATTRIBUTION, buildDivider, buildRow } = require('./CommentBuilder');
 
 function getShop() {
   const options = {
@@ -41,9 +40,9 @@ function buildShop(response) {
 async function buildComment() {
   const response = await getShop();
   const shop = buildShop(response);
-  const header = Builder.buildRow(['Name', 'Price', 'Rarity', 'Type', 'Image']);
+  const header = buildRow(['Name', 'Price', 'Rarity', 'Type', 'Image']);
   const featured = shop.featured.reduce((prev, curr) => {
-    const row = Builder.buildRow([
+    const row = buildRow([
       curr.name,
       curr.price,
       curr.rarity,
@@ -54,7 +53,7 @@ async function buildComment() {
 `;
   }, '');
   const daily = shop.daily.reduce((prev, curr) => {
-    const row = Builder.buildRow([
+    const row = buildRow([
       curr.name,
       curr.price,
       curr.rarity,
@@ -71,13 +70,13 @@ Item shop as of ${new Date().toUTCString()}:
 Featured:
 
 ${header}
-${Builder.buildDivider(5)}
+${buildDivider(5)}
 ${featured}
 
 Daily:
 
 ${header}
-${Builder.buildDivider(5)}
+${buildDivider(5)}
 ${daily}
 
 ${ATTRIBUTION}

@@ -1,14 +1,14 @@
 const ShopHandler = require('./ShopHandler');
+const PlayerHandler = require('./PlayerHandler');
 
 const Actions = {
   /**
    * @param {Object} options
    * @param {string} options.username
    * @param {string} options.platform
-   * @param {string} options.mode
    */
-  findUser({ username, platform, mode }) {
-    console.log(`finduser ${username} ${platform} ${mode}`);
+  findUser({ username, platform }) {
+    return PlayerHandler.buildComment(username, platform);
   },
   /**
    * @return {Promise<string>}
