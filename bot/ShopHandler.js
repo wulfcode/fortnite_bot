@@ -42,12 +42,13 @@ async function buildComment() {
   const shop = buildShop(response);
   const header = buildRow(['Name', 'Price', 'Rarity', 'Type', 'Image']);
   const featured = shop.featured.reduce((prev, curr) => {
+    const image = curr.image ? `[Image](${curr.image})` : 'N/A';
     const row = buildRow([
       curr.name,
       curr.price,
       curr.rarity,
       curr.type,
-      `[Image](${curr.image})`,
+      image,
     ]);
     return `${prev}${row}
 `;

@@ -1,5 +1,6 @@
 const ShopHandler = require('./ShopHandler');
 const PlayerHandler = require('./PlayerHandler');
+const ItemHandler = require('./ItemHandler');
 
 const Actions = {
   /**
@@ -19,7 +20,9 @@ const Actions = {
   /**
    * @todo Implement getting specific cosmetic
    */
-  getItem() {},
+  getItem({ search, type }) {
+    return ItemHandler.buildComment(search, type);
+  },
 };
 
 /**

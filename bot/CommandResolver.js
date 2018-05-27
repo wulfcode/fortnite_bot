@@ -6,6 +6,7 @@ const PATTERN = /\{([^}]+)\}/;
 const actions = {
   findUser: ['findme', 'finduser'],
   getItemShop: ['itemshop', 'shop'],
+  getItem: ['item', 'getitem', 'finditem'],
 };
 
 /**
@@ -36,6 +37,13 @@ class CommandResolver {
     } else if (actions.getItemShop.includes(action)) {
       return {
         action: 'getItemShop',
+      };
+    } else if (actions.getItem.includes(action)) {
+      const search = tokens[1] && tokens[1].replace('-', ' ').replace('_', ' ');
+      return {
+        action: 'getItem',
+        search,
+        type: tokens[2],
       };
     }
     return null;
