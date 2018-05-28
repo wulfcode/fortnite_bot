@@ -39,11 +39,9 @@ class CommandResolver {
         action: 'getItemShop',
       };
     } else if (actions.getItem.includes(action)) {
-      const search = tokens[1] && tokens[1].replace('-', ' ').replace('_', ' ');
       return {
         action: 'getItem',
-        search,
-        type: tokens[2],
+        search: tokens.slice(1).join(' '),
       };
     }
     return null;

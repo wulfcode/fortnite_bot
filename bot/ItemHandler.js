@@ -4,7 +4,7 @@ const request = require('request-promise-native');
 const { ITEMS } = require('./endpoints');
 const { ATTRIBUTION } = require('./CommentBuilder');
 
-function getItem(search, type) {
+function getItem(search) {
   const options = {
     uri: ITEMS,
     qs: {
@@ -14,7 +14,6 @@ function getItem(search, type) {
       [process.env.SHOPHEADER]: process.env.SHOPAPIKEY,
     },
   };
-  if (type) options.qs.type = type;
   return request(options);
 }
 
@@ -27,19 +26,21 @@ function buildItem(response) {
     price: item.price,
     rarity: item.rarity,
     type: item.readableType,
-    image: item.images.png,
+    image: item.images.png || item.images.icon,
   };
 }
 
-async function buildComment(search, itemType) {
-  const response = await getItem(search, itemType);
+async function buildComment(search) {
+  const response = await getItem(search);
   const item = buildItem(response);
   if (!item) return null;
   const { name, price, rarity, type, image } = item;
-  const imageURL = image || 'N/A';
   const useVBucks = !Number.isNaN(parseInt(price.charAt(0), 10));
+  const itemName = !image
+    ? `**${name}** (no image yet)`
+    : `[**${name}**](${image})`;
   return `
-**${type}** [**${name}**](${imageURL}) is **${rarity}** and ${
+**${type}** ${itemName} is **${rarity}** and ${
     useVBucks ? 'costs' : 'requires'
   } **${price}**${useVBucks ? ' vbucks.' : '.'}
 

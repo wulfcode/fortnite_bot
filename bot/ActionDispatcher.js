@@ -20,8 +20,8 @@ const Actions = {
   /**
    * @todo Implement getting specific cosmetic
    */
-  getItem({ search, type }) {
-    return ItemHandler.buildComment(search, type);
+  getItem({ search }) {
+    return ItemHandler.buildComment(search);
   },
 };
 
