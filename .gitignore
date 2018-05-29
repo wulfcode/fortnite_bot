@@ -1,5 +1,7 @@
 # Custom
 .env
+log.json
+
 # Created by https://www.gitignore.io/api/vim,node,macos,visualstudiocode
 
 ### macOS ###

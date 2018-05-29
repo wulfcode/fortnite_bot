@@ -1,10 +1,30 @@
 require('dotenv').config();
 
+const bunyan = require('bunyan');
 const SnooWrap = require('snoowrap');
 const Streamer = require('./Streamer');
 const Resolver = require('./CommandResolver');
 const dispatch = require('./ActionDispatcher');
 const SUBREDDIT = require('./subreddit');
+
+const log = bunyan.createLogger({
+  name: 'fornite_bot',
+  streams: [
+    {
+      level: 'warn',
+      path: './log.json',
+    },
+  ],
+});
+
+process
+  .on('unhandledRejection', (reason, p) => {
+    log.error(reason, 'Unhandled Rejection at Promise', p);
+  })
+  .on('uncaughtException', error => {
+    log.error(error, 'Uncaught Exception thrown');
+    process.exit(1);
+  });
 
 console.log('Fortnite bot is ready.');
 
@@ -20,7 +40,7 @@ const streamer = new Streamer(snooWrap);
 
 const commentStream = streamer.CommentStream({
   subreddit: SUBREDDIT[process.env.NODE_ENV],
-  results: 10,
+  results: 20,
   pollTime: 5000,
 });
 
@@ -38,6 +58,6 @@ commentStream.on('comment', comment => {
       .then(body => {
         if (body) snooWrap.getComment(comment.id).reply(body);
       })
-      .catch(error => console.log(error));
+      .catch(error => log.error(error));
   }
 });
