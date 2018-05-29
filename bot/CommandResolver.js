@@ -4,7 +4,7 @@
 const PATTERN = /\{([^}]+)\}/;
 
 const actions = {
-  findUser: ['findme', 'finduser'],
+  findUser: ['findme', 'finduser', 'findplayer'],
   getItemShop: ['itemshop', 'shop'],
   getItem: ['item', 'getitem', 'finditem'],
 };
